@@ -45,18 +45,21 @@
         <div class="text-block">SIZE:</div>
         <div data-current="Custom" data-easing="ease" data-duration-in="300" data-duration-out="100" class="w-tabs">
           <div class="tabs-menu size w-tab-menu">
-            <a id="dimensions" data-w-tab="2 ' x 4 '" class="tab-item w-inline-block w-tab-link w--current preselected-area">
+            <a id="dimensions" data-w-tab="2 ' x 4 '"
+              class="tab-item w-inline-block w-tab-link w--current preselected-area">
 
               <div class="preselected-width">2 </div>' &nbsp; x &nbsp; <div class="preselected-height "> 4 </div>'
 
             </a>
-            <a id="dimensions-2" data-w-tab="3 ' x 6 '" class="tab-item w-inline-block w-tab-link w--current preselected-area">
+            <a id="dimensions-2" data-w-tab="3 ' x 6 '"
+              class="tab-item w-inline-block w-tab-link w--current preselected-area">
               <div class="preselected-width">3 </div>' &nbsp; x &nbsp; <div class="preselected-height"> 6 </div>'
             </a>
-            <a id="dimensions-3" data-w-tab="4 ' x 7 '" class="tab-item w-inline-block w-tab-link w--current preselected-area">
+            <a id="dimensions-3" data-w-tab="4 ' x 7 '"
+              class="tab-item w-inline-block w-tab-link w--current preselected-area">
               <div class="preselected-width">4 </div>' &nbsp; x &nbsp; <div class="preselected-height"> 7 </div>'
             </a>
-            <a data-w-tab="Custom" class="tab-item w-inline-block w-tab-link w--current">
+            <a id ="dimensions-custom" data-w-tab="Custom" class="tab-item w-inline-block w-tab-link w--current">
               <div>Custom</div>
             </a>
           </div>
@@ -98,16 +101,16 @@
         <div class="text-block">QUANTITY:</div>
         <div data-current="Custom" data-easing="ease" data-duration-in="300" data-duration-out="100" class="w-tabs">
           <div class="tabs-menu size w-tab-menu">
-            <a data-w-tab="50" class="tab-item w-inline-block w-tab-link">
-              <div id="quantity" class="preselected-quantity">50</div>
+            <a id="quantity" data-w-tab="50" class="tab-item w-inline-block w-tab-link preselected-quantity">
+              <div>50</div>
             </a>
-            <a data-w-tab="100" class="tab-item w-inline-block w-tab-link">
-              <div id="quantity-2" class="preselected-quantity">100</div>
+            <a id="quantity-2" data-w-tab="100" class="tab-item w-inline-block w-tab-link preselected-quantity">
+              <div>100</div>
             </a>
-            <a data-w-tab="200" class="tab-item w-inline-block w-tab-link">
-              <div id="quantity-3" class="preselected-quantity">200</div>
+            <a id="quantity-3" data-w-tab="200" class="tab-item w-inline-block w-tab-link preselected-quantity">
+              <div>200</div>
             </a>
-            <a data-w-tab="Custom" class="tab-item w-inline-block w-tab-link w--current">
+            <a id="quantity-custom" data-w-tab="Custom" class="tab-item w-inline-block w-tab-link w--current">
               <div>Custom</div>
             </a>
           </div>
@@ -165,6 +168,7 @@
               console.log(newPrice, "price")
               return newPrice;
             }
+
             var area = selectedWidth * selectedHeight;
             let totalPrice
 
@@ -181,6 +185,8 @@
             document.getElementById('price-display').innerText = totalPrice.toFixed(2);
           }
 
+          // <------------------Preselected area---------------->
+
           function updatePreselectedArea(elementId, selectedId) {
             // Check if the selected ID matches the desired condition (e.g., 'dimensions')
             if (selectedId === elementId) {
@@ -194,7 +200,7 @@
 
               // Calculate the product
               var preselectedArea = width * height;
-              console.log("preselectedArea for " + selectedId + ": " + preselectedArea);
+              console.log("preselectedArea ", preselectedArea);
               return preselectedArea; // Return the preselectedArea value
             }
             return null; // Return null if the condition is not met
@@ -202,7 +208,7 @@
 
           // Function to get the ID of the currently active tab
           function getSelectedTabId() {
-            var selectedTab = document.querySelector('.tab-item.w-tab-link.w--current');
+            var selectedTab = document.querySelector('.tab-item.w-tab-link.w--current.preselected-area');
             return selectedTab ? selectedTab.id : null;
           }
 
@@ -217,17 +223,37 @@
             });
           });
 
-          function updatePreselectedQuantity(elementId) {
-            // Get the elements containing the numbers
-            var quantityElement = document.getElementById(elementId);
-            // Extract the numbers and convert them to integers
-            var quantity = parseInt(quantityElement.textContent.trim());
-            console.log("quantity", quantity)
+          // <------------------Preselected quantity---------------->
+
+          function updatePreselectedQuantity(elementId2, selectedId2) {
+
+            if (selectedId2 === elementId2) {
+              // Get the elements containing the numbers
+              var quantityElement = document.getElementById(elementId2);
+
+              // Extract the numbers and convert them to integers
+              var preselectedQuantity = parseInt(quantityElement.textContent.trim());
+              console.log("quantity", preselectedQuantity)
+              return preselectedQuantity
+            }
+
+            return null; // Return null if the condition is not met
           }
 
-          updatePreselectedQuantity('quantity');
-          updatePreselectedQuantity('quantity-2');
-          updatePreselectedQuantity('quantity-3');
+          function getSelectedTabId2() {
+            var selectedTab2 = document.querySelector('.tab-item.w-tab-link.w--current.preselected-quantity');
+            return selectedTab2 ? selectedTab2.id : null;
+          }
+          // Attach event listeners for tab clicks
+          var tabLinks2 = document.querySelectorAll('.tab-item.w-tab-link.preselected-quantity');
+          tabLinks2.forEach(function (tabLink) {
+            tabLink.addEventListener('click', function () {
+              var selectedId2 = this.id;
+              updatePreselectedQuantity('quantity', selectedId2);
+              updatePreselectedQuantity('quantity-2', selectedId2);
+              updatePreselectedQuantity('quantity-3', selectedId2);
+            });
+          });
 
           // Attach event listeners for changes in options and quantity
           document.getElementById('field').addEventListener('change', updateTotalPrice);
