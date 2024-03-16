@@ -59,7 +59,7 @@
               class="tab-item w-inline-block w-tab-link w--current preselected-area">
               <div class="preselected-width">4 </div>' &nbsp; x &nbsp; <div class="preselected-height"> 7 </div>'
             </a>
-            <a id ="dimensions-custom" data-w-tab="Custom" class="tab-item w-inline-block w-tab-link w--current">
+            <a id="dimensions-custom" data-w-tab="Custom" class="tab-item w-inline-block w-tab-link w--current">
               <div>Custom</div>
             </a>
           </div>
@@ -133,7 +133,9 @@
       <script>
         document.addEventListener("DOMContentLoaded", function () {
           // Function to update the total price based on selected options and quantity
-          function updateTotalPrice() {
+          function updateTotalPrice(preselectedArea, preselectedQuantity) {
+
+            console.log(preselectedArea, preselectedQuantity)
             // Get selected width and height values
             var feetWidth = parseFloat(document.getElementById('field').value);
             var inchWidth = parseFloat(document.getElementById('field-3').value);
@@ -143,7 +145,7 @@
             var inchHeight = parseFloat(document.getElementById('field-4').value);
             var selectedHeight = (isNaN(feetHeight) ? 0 : feetHeight * 12) + (isNaN(inchHeight) ? 0 : inchHeight);
 
-            // Get the quantity value
+            // // Get the quantity value
             var quantity = parseFloat(document.getElementById('quantity-input').value);
 
             // Check if the values are valid numbers
@@ -185,82 +187,13 @@
             document.getElementById('price-display').innerText = totalPrice.toFixed(2);
           }
 
-          // <------------------Preselected area---------------->
-
-          function updatePreselectedArea(elementId, selectedId) {
-            // Check if the selected ID matches the desired condition (e.g., 'dimensions')
-            if (selectedId === elementId) {
-              // Get the elements containing the numbers
-              var widthElement = document.getElementById(elementId).querySelector('.preselected-width');
-              var heightElement = document.getElementById(elementId).querySelector('.preselected-height');
-
-              // Extract the numbers and convert them to integers
-              var width = parseInt(widthElement.textContent.trim());
-              var height = parseInt(heightElement.textContent.trim());
-
-              // Calculate the product
-              var preselectedArea = width * height;
-              console.log("preselectedArea ", preselectedArea);
-              return preselectedArea; // Return the preselectedArea value
-            }
-            return null; // Return null if the condition is not met
-          }
-
-          // Function to get the ID of the currently active tab
-          function getSelectedTabId() {
-            var selectedTab = document.querySelector('.tab-item.w-tab-link.w--current.preselected-area');
-            return selectedTab ? selectedTab.id : null;
-          }
-
-          // Attach event listeners for tab clicks
-          var tabLinks = document.querySelectorAll('.tab-item.w-tab-link');
-          tabLinks.forEach(function (tabLink) {
-            tabLink.addEventListener('click', function () {
-              var selectedId = this.id;
-              updatePreselectedArea('dimensions', selectedId);
-              updatePreselectedArea('dimensions-2', selectedId);
-              updatePreselectedArea('dimensions-3', selectedId);
-            });
-          });
-
-          // <------------------Preselected quantity---------------->
-
-          function updatePreselectedQuantity(elementId2, selectedId2) {
-
-            if (selectedId2 === elementId2) {
-              // Get the elements containing the numbers
-              var quantityElement = document.getElementById(elementId2);
-
-              // Extract the numbers and convert them to integers
-              var preselectedQuantity = parseInt(quantityElement.textContent.trim());
-              console.log("quantity", preselectedQuantity)
-              return preselectedQuantity
-            }
-
-            return null; // Return null if the condition is not met
-          }
-
-          function getSelectedTabId2() {
-            var selectedTab2 = document.querySelector('.tab-item.w-tab-link.w--current.preselected-quantity');
-            return selectedTab2 ? selectedTab2.id : null;
-          }
-          // Attach event listeners for tab clicks
-          var tabLinks2 = document.querySelectorAll('.tab-item.w-tab-link.preselected-quantity');
-          tabLinks2.forEach(function (tabLink) {
-            tabLink.addEventListener('click', function () {
-              var selectedId2 = this.id;
-              updatePreselectedQuantity('quantity', selectedId2);
-              updatePreselectedQuantity('quantity-2', selectedId2);
-              updatePreselectedQuantity('quantity-3', selectedId2);
-            });
-          });
-
           // Attach event listeners for changes in options and quantity
           document.getElementById('field').addEventListener('change', updateTotalPrice);
           document.getElementById('field-3').addEventListener('change', updateTotalPrice);
           document.getElementById('field-2').addEventListener('change', updateTotalPrice);
           document.getElementById('field-4').addEventListener('change', updateTotalPrice);
           document.getElementById('quantity-input').addEventListener('input', updateTotalPrice);
+
         });
       </script>
 
